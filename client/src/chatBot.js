@@ -17,7 +17,6 @@ const Chatbot = () => {
   const handleInputChange = (event) => {
     setMessage(event.target.value);
   };
-
   const handleSendMessage = () => {
     if (message.toLowerCase() === 'menu') {
       // Mostrar el menú cuando se solicite
@@ -32,22 +31,25 @@ const Chatbot = () => {
         setOrder(newOrder);
 
         // Mandar pedido al servidor
-        axios.post('http://localhost:5001/pedido', { items: newOrder.map(item => ({ product: item.product, quantity: 1 })) })
+        axios.post('http://localhost:5001/pedidos', { items: newOrder.map(item => ({ product: item.product, quantity: 1 })) })
           .then((res) => setResponse(`Pedido realizado: ${newOrder.map(item => item.name).join(', ')}`))
           .catch((err) => console.error('Error al realizar el pedido', err));
       } else {
         setResponse('Producto no encontrado en el menú.');
       }
-    } else if (message.toLowerCase() === '¿están abiertos?') {
-      // Responder si están abiertos (se puede mejorar para agregar más lógica)
-      setResponse('¡Sí, estamos abiertos!');
-    } else {
-      setResponse('Lo siento, no entendí tu mensaje.');
-    }
-
+    } else if (message.toLowerCase() === 'estan abiertos?') {
+      axios.get("http://localhost:5001/abierto")
+      .then((res)=>setResponse(res.data))
+      .catch((err)=> console.error("Error al consultar horario", err))
+    } 
     setMessage('');
   };
-
+ //Enter
+ const enterButton = (e)=> {
+  if(e.key === "Enter"){
+    handleSendMessage();
+  }
+}
   return (
     <div className="chatbot">
       <h1>Chatbot</h1>
@@ -58,7 +60,8 @@ const Chatbot = () => {
         <input
           type="text"
           value={message}
-          onChange={handleInputChange}
+          onChange={(e)=>setMessage(e.target.value)}
+          onKeyPress={enterButton}
           placeholder="Escribe tu mensaje..."
         />
         <button onClick={handleSendMessage}>Enviar</button>
