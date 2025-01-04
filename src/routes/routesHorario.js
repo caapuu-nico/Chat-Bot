@@ -17,20 +17,21 @@ const horario ={
   }
 }
 const verificarHorario = () => {
+  
   const ahora = moment();
-  const dia = ahora.format("dddd");  // Nombre del dia
+  const dia = ahora.format('dddd').toLowerCase();  // Nombre del dia
   const horaActual = ahora.format("HH:mm")
   if(dia === "lunes" && horario.lunes.cerrado){
     return false
   }
   let horarioHoy;
-  if(["martes","miercoles","jueves","viernes","sabado"].includes(dia)){
+  if(["martes","miércoles","jueves","viernes","sábado"].includes(dia)){
     horarioHoy = horario.martesASabados;
   }else if(dia === "domingo"){
     horarioHoy = horario.domingo
   }
+  console.log(dia)
   return horaActual >= horarioHoy.apertura && horaActual <= horarioHoy.cierre;
- 
 };
 
 router.get('/abierto', (req, res) => {
@@ -39,13 +40,14 @@ router.get('/abierto', (req, res) => {
     const dia = ahora.format('dddd');
   
     let horarioHoy;
-    if(["martes", "miercoles","jueves","viernes","sabado"].includes(dia)){
+    if(["martes", "miércoles","jueves","viernes","sábado"].includes(dia)){
       horarioHoy = horario.martesASabados;
   }else if (dia ==="domingo"){
       horarioHoy = horario.domingo
   }else if(dia === "lunes" && horario.lunes.cerrado){
     return res.send("Lo siento estamos cerrados hoy Lunes")
-  }else{
+  }
+  else{
     horarioHoy ={
       apertura:"Cerrado",
        cierre:"Cerrado"
@@ -58,3 +60,6 @@ router.get('/abierto', (req, res) => {
   }})
   
   module.exports = router
+
+
+  
