@@ -23,7 +23,6 @@ const verificarHorario = () => {
   if(dia === "lunes" && horario.lunes.cerrado){
     return false
   }
-
   let horarioHoy;
   if(["martes","miercoles","jueves","viernes","sabado"].includes(dia)){
     horarioHoy = horario.martesASabados;

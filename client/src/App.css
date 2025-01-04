@@ -42,3 +42,13 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+/* .menu {
+  display: flex;
+  flex-wrap: wrap;
+} */
+
+/* .menu-item {
+  margin: 10px;
+  text-align: center;
+} */

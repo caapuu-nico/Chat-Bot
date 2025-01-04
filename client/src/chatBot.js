@@ -13,15 +13,31 @@ const Chatbot = () => {
       .then((res) => setMenu(res.data))
       .catch((err) => console.error('Error al obtener el menú', err));
   }, []);
-
-  const handleInputChange = (event) => {
-    setMessage(event.target.value);
-  };
+  // const handleInputChange = (event) => {
+  //   setMessage(event.target.value);
+  // };
   const handleSendMessage = () => {
-    if (message.toLowerCase() === 'menu') {
+    const lowerCaseMessage = message.toLowerCase();
+    if(lowerCaseMessage.includes("estan") || lowerCaseMessage.includes("abiertos")) {
+      axios.get("http://localhost:5001/abierto")
+      .then((res)=>setResponse(res.data))
+      .catch((err)=> console.error("Error al consultar horario", err))
+    }else if(lowerCaseMessage.includes("horario") || lowerCaseMessage.includes("atencion")){
+        const infoHorario = 
+        `Nuestros horarios:
+        -Martes a Sabados: de 11:30 a 23:30
+        -Domingo: de 17:00 a 23:30
+        -Lunes: Cerrado`;
+        setResponse(infoHorario);
+    }else if (lowerCaseMessage === 'menu') {
       // Mostrar el menú cuando se solicite
-      setResponse(`Nuestro menú:\n${menu.map(item => `${item.name} - $${item.price}`).join('\n')}`);
-    } else if (message.toLowerCase().startsWith('ordenar')) {
+        const menuImage = menu.map(item=>({
+          name:item.name,
+          price:item.price,
+          image:item.photo_url
+        }));
+        setResponse(menuImage)
+    } else if  (message.toLowerCase().startsWith('ordenar')) {
       // Tomar pedido cuando el usuario lo solicite
       const productName = message.split(' ')[1];
       const product = menu.find(item => item.name.toLowerCase() === productName.toLowerCase());
@@ -37,13 +53,12 @@ const Chatbot = () => {
       } else {
         setResponse('Producto no encontrado en el menú.');
       }
-    } else if (message.toLowerCase() === 'estan abiertos?') {
-      axios.get("http://localhost:5001/abierto")
-      .then((res)=>setResponse(res.data))
-      .catch((err)=> console.error("Error al consultar horario", err))
     } 
+    
+  
     setMessage('');
-  };
+  }
+
  //Enter
  const enterButton = (e)=> {
   if(e.key === "Enter"){
@@ -54,9 +69,20 @@ const Chatbot = () => {
     <div className="chatbot">
       <h1>Chatbot</h1>
       <div className="chat-window">
-        <div className="messages">
-          <p>{response}</p>
-        </div>
+        {/*Mostrar menu*/}
+        {Array.isArray(response) ? (
+          <div className='menu'>
+            {response.map((i, index)=>(
+            <div key={index} className="menu-item">
+              <img src={i.image} alt={i.name} style={{width: "100px", height: "100px"}} />
+              <p key={index.id}>{i.name} - {i.price}</p>
+              </div>
+              ))
+              }
+              </div>
+            ):(
+              <p>{response}</p> //Texto normal
+            )}
         <input
           type="text"
           value={message}
