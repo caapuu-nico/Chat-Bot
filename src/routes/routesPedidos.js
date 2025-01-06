@@ -4,18 +4,25 @@ const Product = require("../models/Product");
 const router = Router();
 
 router.post("/pedidos", async(req, res)=> {
-    const {items} = req.body;
     try{
+        const {items} = req.body;
         //Calculo pedido
         let total = 0
-        for(const item of items){
-            const product = await Product.findById(item.product);
-            total += product.price * item.quantity;
-        }
+        const orderItems = await Promise.all(items.map(async (i)=>{
+            const product = await Product.findById(i.product);
+            if(!product){
+                return res.status(404).json({message: "Producto no encontrado"});
+            }
+            total += product.price * i.quantity;
+            return {
+                product: product._id,
+                quantity: i.quantity,
+            }
+        }));    
         //Creacion pedido
         const newOrder = new Order({
-            items,
-            total,
+            items: orderItems,
+            total
         });
         await newOrder.save();
 
