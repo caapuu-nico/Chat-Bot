@@ -9,7 +9,7 @@ const Chatbot = () => {
 
   useEffect(() => {
     // Obtener el menú al cargar la página
-    axios.get('http://localhost:5001/menu')
+    axios.get('http://localhost:4000/api/menu')
       .then((res) => setMenu(res.data))
       .catch((err) => console.error('Error al obtener el menú', err));
   }, []);
@@ -17,9 +17,10 @@ const Chatbot = () => {
   //   setMessage(event.target.value);
   // };
   const handleSendMessage = () => {
+    // Verificar horario
     const lowerCaseMessage = message.toLowerCase();
     if(lowerCaseMessage.includes("estan") || lowerCaseMessage.includes("abiertos")) {
-      axios.get("http://localhost:5001/abierto")
+      axios.get("http://localhost:4000/api/abierto")
       .then((res)=>setResponse(res.data))
       .catch((err)=> console.error("Error al consultar horario", err))
     }else if(lowerCaseMessage.includes("horario") || lowerCaseMessage.includes("atencion")){
@@ -37,22 +38,28 @@ const Chatbot = () => {
           image:item.photo_url
         }));
         setResponse(menuImage)
-    } else if  (message.toLowerCase().startsWith('ordenar')) {
+        //Generar orden
+    } else if  (lowerCaseMessage.toLowerCase().startsWith('ordenar')) {
       // Tomar pedido cuando el usuario lo solicite
-      const productName = message.split(' ')[1];
-      const product = menu.find(item => item.name.toLowerCase() === productName.toLowerCase());
-
+      const productName = lowerCaseMessage.split(' ')[1];
+      // const product = menu.find(item => item.name.toLowerCase() === productName.toLowerCase());
+      axios.get(`http://localhost:4000/api/menu?name=${productName}`)
+      .then((res)=>{
+        const product = res.data
       if (product) {
-        const newOrder = [...order, { product: product._id, name: product.name }];
+        const newOrder = [...order, { 
+            product: product._id,
+             name: product.name 
+            }];
         setOrder(newOrder);
-
         // Mandar pedido al servidor
-        axios.post('http://localhost:5001/pedidos', { items: newOrder.map(item => ({ product: item.product, quantity: 1 })) })
+        axios.post("http://localhost:4000/api/pedidos",{items: newOrder})
           .then((res) => setResponse(`Pedido realizado: ${newOrder.map(item => item.name).join(', ')}`))
           .catch((err) => console.error('Error al realizar el pedido', err));
       } else {
         setResponse('Producto no encontrado en el menú.');
       }
+    })
     } 
     
   
