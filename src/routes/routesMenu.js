@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/menu", async(req, res)=>{
 try{
-    const {name} =req.query
+    const {name} = req.query
     let product = await Product.findOne({ 
         name: new RegExp(name, 'i') 
     }); 

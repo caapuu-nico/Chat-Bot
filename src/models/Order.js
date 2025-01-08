@@ -13,13 +13,20 @@ const orderSchema = new mongoose.Schema({
                 type: Number,
                 required: true
             }
-        }
-    ],
-    total: Number,
-    createdAt:{
-        type:Date,
-        default: Date.now,
-    },
+        }],
+            customerName:{ 
+                type: String, 
+                required: true 
+            },  // Nombre del cliente
+            status: { 
+                type: String, 
+                default: 'Pendiente' 
+            },  // Estado del pedido
+            createdAt:{   
+                type: Date,
+                default: Date.now 
+            },
+            total: Number
 });
 
 module.exports = mongoose.model("Order", orderSchema);

@@ -8,6 +8,7 @@ router.get("/",(req,res)=>{
 })
 router.get("/menu",routesMenu);
 router.post("/pedidos",routesPedidos);
+router.get("/pedidos",routesPedidos);
 router.get("/abierto",routesHorario);
 
 module.exports = router;
