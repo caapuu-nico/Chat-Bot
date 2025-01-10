@@ -108,6 +108,14 @@ Creamos un pedido nuevo
 }
 }
 
+Puedes tambien crear productos o agregar los productos que quieras desde /db.json con los siguientes datos.
+{
+	"name":"nombre",
+	"price":precio,
+	"photo_url":"url imagen"
+},
+
+
 ### 8 Pruebas
 
 Puedes correr algunas pruebas básicas del backend utilizando Jest o Mocha. Asegúrate de tener configurado el entorno de pruebas y usar mocks para la base de datos, si es necesario.
