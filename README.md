@@ -111,3 +111,11 @@ Creamos un pedido nuevo
 ### 8 Pruebas
 
 Puedes correr algunas pruebas básicas del backend utilizando Jest o Mocha. Asegúrate de tener configurado el entorno de pruebas y usar mocks para la base de datos, si es necesario.
+
+Utilizamos Jest y puedes hacer pruebas 
+
+npm test
+
+### Cualquier consulta o duda estoy a disposicion respecto a la instalacion del proyecto,inici y su uso.
+
+
