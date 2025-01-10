@@ -5,11 +5,11 @@ const router = Router();
 
 router.post("/pedidos", async(req, res)=> {
     try{
-        const {products, customerName} = req.body;
+        const {products, customerName, street, number, city} = req.body;
         //Calculo pedido
         const orderItems = await Promise.all(products.map(async (item)=>{
             const product = await Product.findById(item.productId);
-            if(!product){
+            if(!products){
                 throw new Error(`Producto con ID ${item.productId} no existe.`);
             }
             return {
@@ -19,12 +19,22 @@ router.post("/pedidos", async(req, res)=> {
         }));    
         //Creacion pedido
         const newOrder = new Order({
-            products: orderItems,
-            customerName: customerName 
-            
+            products: orderItems.productId,
+            customerName: customerName,
+            street: street,
+            number: number,
+            city: city,
+
+        
         });
         await newOrder.save();
-        res.status(201).json({ message: "Pedido creado exitosamente", order: newOrder });
+        res.status(201).json({ message: "Pedido creado exitosamente",           
+                nombre: customerName,
+                products,
+                calle: street,
+                numero: number,
+                ciudad:city
+         });
     }catch(error){
         res.status(500).json({ message: "Error al crear el pedido", error: error.message });
     }

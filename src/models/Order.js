@@ -14,13 +14,17 @@ const orderSchema = new mongoose.Schema({
                 required: true
             }
         }],
+          // Nombre del cliente
             customerName:{ 
                 type: String, 
                 required: true 
-            },  // Nombre del cliente
+            },
+            street: String,
+            number: Number,
+            city: String,
             status: { 
                 type: String, 
-                default: 'Pendiente' 
+                default: "Pendiente"
             },  // Estado del pedido
             createdAt:{   
                 type: Date,

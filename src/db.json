@@ -1,0 +1,32 @@
+[
+	{
+	"name":"Sushi vegano ",
+	"price":18000,
+	"photo_url":"https://i.pinimg.com/236x/25/5d/27/255d2787bd236707317169420a17958c.jpg"
+},
+{
+	"name":"Seleccion 12 piezas",
+	"price":14000,
+	"photo_url":"https://i.pinimg.com/474x/63/1b/e6/631be64e8f2fecf5830e5da40123cb6e.jpg"
+},
+{
+	"name":"Sushi frito",
+	"price":12000,
+	"photo_url":"https://i.pinimg.com/236x/3a/83/aa/3a83aab5c5da852e5dc8cd414882bc01.jpg"
+},
+{
+	"name":"Sushi fiesta 2 70 piezas",
+	"price":37000,
+	"photo_url":"https://i.pinimg.com/474x/be/48/34/be4834688425e43b8be9e16b4ae41fb8.jpg"
+},
+{
+	"name":"Ejecutivo",
+	"price":15000,
+	"photo_url":"https://i.pinimg.com/736x/9a/75/35/9a7535b180a18390531bf2d0ac41ba7d.jpg"
+},
+{
+	"name":"Ejecutivo 5 ",
+	"price":17000,
+	"photo_url":"https://i.pinimg.com/736x/9a/75/35/9a7535b180a18390531bf2d0ac41ba7d.jpg"
+}
+]
