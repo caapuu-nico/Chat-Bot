@@ -18,7 +18,7 @@ Sigue estos pasos para instalar y ejecutar el proyecto:
 
 Usa el siguiente comando para clonar el repositorio en tu máquina local:
 bash
-https://github.com/caapuu-nico/Chat-Bot/
+[https://github.com/caapuu-nico/Chat-Bot/](https://github.com/caapuu-nico/Chat-Bot.git)
 
 ### 2 Ve al directorio del proyecto
 
