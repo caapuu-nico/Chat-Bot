@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import "./App.css"
 const Chatbot = () => {
   const [menu, setMenu] = useState([]);
-  const [order, setOrder] = useState([]);
   const [message, setMessage] = useState('');
   const [response, setResponse] = useState('');
-  const [menuItems, setMenuItems] = useState([]);
   const [customerName, setCustomerName] =useState("");
+  const [street, setStreet] = useState("");
+  const [number, setNumber] = useState("");
+  const [city, setCity] = useState("");
 
 
 
@@ -19,13 +20,16 @@ const Chatbot = () => {
   }, []);
   const sendOrder = (product) => {
     // Asegurarse de que el nombre del cliente y el producto estén disponibles
-    if (!customerName || !product) {
-      alert("Por favor ingresa un nombre y selecciona un producto.");
+    if (!customerName  || !street || !number || !city || !product) {
+      alert("Por favor completa los campos para realizar el pedido");
       return;
     }
     // Crear el objeto del pedido
     const order = {
       customerName: customerName || "Cliente anonimo",
+      street: street,
+      number: number,
+      city: city,
       products: [{ 
         productId: product.id,
          quantity: 1 }]  // Puedes ajustar la cantidad si es necesario
@@ -67,32 +71,6 @@ const Chatbot = () => {
           id:item._id
         }));
         setResponse(menuImage)
-        //Generar orden
-    // } else if  (lowerCaseMessage.toLowerCase().startsWith('ordenar')) {
-    //   // Tomar pedido cuando el usuario lo solicite
-    //   const productName = lowerCaseMessage.split(' ')[1];
-    //   // const product = menu.find(item => item.name.toLowerCase() === productName.toLowerCase());
-    //   axios.get(`http://localhost:4000/api/menu?name=${productName}`)
-    //   .then((res)=>{
-    //     const product = res.data
-    //   if (product) {
-    //     const newOrder = [...order, { 
-    //         product: product._id,
-    //          name: product.name 
-    //         }];
-    //     setOrder(newOrder);
-    //     console.log(newOrder)
-    //     // Mandar pedido al servidor
-    //     axios.post("http://localhost:4000/api/pedidos",order)
-    //       .then(response=>{console.log("Pedido creado", response.data);
-    //         alert(`Pedido de ${product.name} creado exitoso`)
-    //       })
-
-    //       .catch(err => console.error('Error al realizar el pedido', err));
-    //   } else {
-    //     setResponse('Producto no encontrado en el menú.');
-    //   }
-    // })
     } 
     setMessage('');
   }
@@ -103,39 +81,67 @@ const Chatbot = () => {
   }
 }
   return (
-    <div className="chatbot">
-      <h1>Chatbot</h1>
-      <div className="chat-window">   
+    <div className="chatbot-container">
+       <div className="chatbot-box">
+      <h1 className="chatbot-title">Chatbot</h1>
+      <div className="chat-window">
         {/*Mostrar menu*/}
         {Array.isArray(response) ? (         
-          <div className='menu'>
-              <h2>Menu</h2>
+          <div className="menu-items">
+              <h2 className="menu-title">Menu</h2>
               <input 
+              className="customer-input"
             type="text" 
-            placeholder="Nombre del cliente (opcional)" 
+            placeholder="Nombre del cliente" 
             value={customerName}
         onChange={(e) => setCustomerName(e.target.value)} 
       />
+        <input 
+            type="text" 
+            placeholder="Calle" 
+            value={street}
+             className="customer-input"
+        onChange={(e) => setStreet(e.target.value)} 
+      />
+         <input 
+            type="text" 
+            placeholder="Altura" 
+            value={number}
+             className="customer-input"
+        onChange={(e) => setNumber(e.target.value)} 
+      />
+        <input 
+            type="text" 
+            placeholder="Ciudad" 
+             className="customer-input"
+            value={city}
+        onChange={(e) => setCity(e.target.value)} 
+      />
             {response.map((i, index)=>(
-            <div key={i.id} className="menu-item">
-              <img src={i.image} alt={i.name}style={{width: "100px", height: "100px"}} />
-              <p key={i.id}>{i.name} - {i.price}</p>
-              <button onClick={() => sendOrder(i)}>Pedir este producto</button>
+            <div key={i.id}className="menu-item" >
+              <img className="menu-image" src={i.image} alt={i.name}/>
+              <div className="menu-details">
+              <p className="menu-name">{i.name}</p>
+              <p className="menu-price">${i.price}</p>
+              <button className="menu-order-button" onClick={() => sendOrder(i)}>Pedir este producto</button>
+              </div>
               </div>
               ))
               }
               </div>
             ):(
-              <p>{response}</p>
+              <p className="bot-response">{response}</p>
             )}
         <input
           type="text"
           value={message}
           onChange={(e)=>setMessage(e.target.value)}
+          className="chat-input"
           onKeyPress={enterButton}
-          placeholder="Escribe tu mensaje..."
+          placeholder="Consulta horario o nuestro menu"
         />
-        <button onClick={handleSendMessage}>Enviar</button>
+        <button className="send-button" onClick={handleSendMessage}>Enviar</button>
+        </div>
       </div>
     </div>
   );
